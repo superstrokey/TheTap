@@ -1,0 +1,9 @@
+# build
+public
+
+# intellij
+*.iml
+
+# npm
+*.log
+node_modules
