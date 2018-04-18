@@ -21,7 +21,7 @@ module.exports =
         exclude: /node_modules/
         use: \style-loader
   plugins:
-#    * new uglifyjs-webpack-plugin!
+    * new uglifyjs-webpack-plugin!
     * new html-webpack-plugin do
         title: '[ The Tap ]'
         cache: false

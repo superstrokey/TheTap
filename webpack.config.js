@@ -26,7 +26,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new htmlWebpackPlugin({
+    new uglifyjsWebpackPlugin(), new htmlWebpackPlugin({
       title: '[ The Tap ]',
       cache: false,
       minify: {
