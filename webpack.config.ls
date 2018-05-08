@@ -1,14 +1,14 @@
 require! {
+  \css-loader
   \html-webpack-plugin
   \html-webpack-inline-source-plugin
-  \path 
-  \uglifyjs-webpack-plugin 
+  \path
   \webpack 
 }
 
 module.exports =
   mode: 'none'
-  entry: \./src/index.ls
+  entry: \./src/entry
   output:
     path: path.join __dirname, \.
     filename: \index.min.js
@@ -19,13 +19,13 @@ module.exports =
         use: <[ babel-loader livescript-loader ]>
       * test: /\.css$/
         exclude: /node_modules/
-        use: \style-loader
+        use: <[ style-loader css-loader ]>
   plugins:
-    * new uglifyjs-webpack-plugin!
     * new html-webpack-plugin do
         title: '[ The Tap ]'
         cache: false
         minify: { +collapse-whitespace }
+       # minify: false
         hash: true
         inline-source: /.css$/
     * new html-webpack-inline-source-plugin!
