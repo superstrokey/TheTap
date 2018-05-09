@@ -1,10 +1,11 @@
 require! 'pixi.js': PIXI
+
 class Entity extends PIXI.Container
-  (@app, @name) ->
+  (@engine, @app, @name) ->
 
 class Scene extends Entity
-  (@engine, app, name) -> 
-    super app, "#name scene"
+  (engine, app, name) -> 
+    super engine, app, "#name scene"
   # Scene Management
   go-to: -> @engine.push-scene it
   exit: -> @engine.pop-scene!
@@ -17,8 +18,17 @@ class IntroScene extends Scene
         font-size: 24
         align: 'center'
         fill: 0xffffff
+    @tick = 0
 
-  draw: -> 
-  update: (dt) -> true
+  update: (dt) ->
+    console.log 'updating'
+    @tick++
+    if tick == 30
+      @app.stage.add-child new PIXI.Text 'More Tap' do
+          font-family: 'Helveltica'
+          font-size: 36
+          align: 'center'
+          fill: 0xffffff
+          y: 240
 
 module.exports = {IntroScene}

@@ -1,4 +1,5 @@
 require! {
+  './build': {build-lunr-indexes}
   \css-loader
   \html-webpack-plugin
   \html-webpack-inline-source-plugin
@@ -21,11 +22,11 @@ module.exports =
         exclude: /node_modules/
         use: <[ style-loader css-loader ]>
   plugins:
+    * new build-lunr-indexes!
     * new html-webpack-plugin do
         title: '[ The Tap ]'
         cache: false
         minify: { +collapse-whitespace }
-       # minify: false
         hash: true
         inline-source: /.css$/
     * new html-webpack-inline-source-plugin!

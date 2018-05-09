@@ -4,6 +4,7 @@ require! {
     '../settings'
 }
 
+import './style.css'
+
 log.main "Starting \"The Tap\" (version: #{settings.version})"
-the-tap = new Engine!
-the-tap.init \test
+new Engine!init \test

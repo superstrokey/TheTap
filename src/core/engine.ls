@@ -6,22 +6,25 @@ class Engine
     log.pray 'Initializing engine...'
     @scene-stack = []
     log.sys 'Load PIXI'
-    @app = new PIXI.Application do
+    @app = new PIXI.Application {
+      +antialias
+      -transparent
       height: settings.screen.height
       width: settings.screen.width
-      antialias: true
-      transparent: false
       resolution: settings.screen.resolution
+    }
     log.sys 'Adding view to document'
     document.body.append-child @app.view
+    log.sys 'Adding update to ticker'
     @app.ticker.add -> (@update it), @
+    @app.ticker.start!
     log.yay 'Done!'
   
-  init: -> 
-    switch it
+  init: -> switch it
+    | \game => @push-scene new entity.IntroScene @
     | \test => @push-scene new entity.IntroScene @
     | otherwise => ...
-  
+
   current: -> @scene-stack[*]
 
   push-scene: -> 
