@@ -1,0 +1,1 @@
+{"version":"2.2.0","fields":["module","tags","type"],"fieldVectors":[["module/test-world",[0,0.288]],["tags/test-world",[]],["type/test-world",[1,0.288]]],"invertedIndex":[["test",{"_index":0,"module":{"test-world":{}},"tags":{},"type":{}}],["world",{"_index":1,"module":{},"tags":{},"type":{"test-world":{}}}]],"pipeline":["stemmer"]}

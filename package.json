@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "ls-build": "lsc -cbp webpack.config.ls > webpack.config.js && lsc -cbo material material && lsc -cbo build build",
-    "webpack-dev": "npm run ls-build && webpack --display-error-details",
-    "webpack-prod": "npm run ls-build && webpack --display-error-details -p",
+    "pre-clean": "rimraf *.js *.html indexes/*",
+    "pre-build": "lsc -cbp webpack.config.ls > webpack.config.js && lsc -cbo material material && lsc -cbo build build",
+    "webpack-dev": "npm run pre-build && webpack --display-error-details",
+    "webpack-prod": "npm run pre-build && webpack --display-error-details -p",
+    "post-clean": "rimraf material/*.js material/*/**.js build/*.js webpack.config.js",
+    "build-dev": "npm run pre-clean && npm run webpack-dev && npm run post-clean",
+    "build-prod": "npm run pre-clean && npm run webpack-prod && npm run post-clean",
     "serve": "http-server . -c-1 -o -p 8888",
-    "all-dev": "npm run pre-clean && npm run webpack-dev && npm run post-clean && npm run serve",
-    "all-prod": "npm run pre-clean && npm run webpack-prod && npm run post-clean && npm run serve",
-    "pre-clean": "rimraf *.js *.html",
-    "post-clean": "rimraf material/*.js material/*/**.js build/*.js webpack.config.js"
+    "all-dev": "npm run build-dev && npm run serve",
+    "all-prod": "npm run build-prod && npm run serve"
   },
   "author": "",
   "license": "Zlib",
@@ -19,7 +21,8 @@
     "autoload": "^0.1.2",
     "lunr": "^2.1.6",
     "pixi-sound": "^2.0.2",
-    "pixi.js": "^4.7.3"
+    "pixi.js": "^4.7.3",
+    "prelude-ls": "^1.1.2"
   },
   "devDependencies": {
     "babel-loader": "^7.1.4",

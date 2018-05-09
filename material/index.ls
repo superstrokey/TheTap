@@ -1,2 +1,5 @@
 module.exports = 
-  core: require './core'
+  * require './core'
+  # Comment out when not testing
+  * require './test'
+  ...
