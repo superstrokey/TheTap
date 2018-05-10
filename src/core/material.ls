@@ -1,25 +1,29 @@
 require! '../../material'
 require! 'prelude-ls': {flatten, fold, map}
 
-sanitize = -> it.id.to-lower-case!replace ' ' '-'
+require! './log'
 
-module.exports = (options={+modules, +worlds}, modules=[m.id for m in material]) ->
-  contexts = []
-  for k, v of options
-    throw "#k is not a valid option for material(...)" if k not in ['modules', 'worlds']
-    contexts ++ k if v
-  for m in modules
-    throw "#m is not a valid module for material(...)" unless m in [sanitize i.id for i in material]
-  
-  modules = map sanitize, modules
-  results = {}
-  for module in modules
-    if options.modules then
-      results[sanitize module.id] =
-        id: module.id
-        description: module.description
-    for context in contexts
-      for content in context
-        results[content.id] = module[context]
-        results[content.id]['type'] = context
-  results
+sanitize = -> it.to-lower-case!replace ' ' '-'
+
+module.exports = 
+  modules: [m for m in material]
+  tree: material
+  flat: (options={+all}, modules=[m.name for m in @modules]) ->
+    options = {+worlds} if options.all
+    contexts = []
+    material-map = fold ((o, el) -> Object.assign {(el.id): el}, o), {}, material
+    for k, v of options
+      throw "#k is not a valid option for material(...)" unless k in ['worlds']
+      contexts.push k if v
+    for m in map sanitize, modules
+      throw "#m is not a valid module for material(...)" unless material-map[m]?
+    
+    modules = map sanitize, modules
+    results = {}
+    for module in material when module.id in modules
+      for context in contexts when module[context]?
+        for content in material-map[module.id][context]
+          results[content.id] = content
+          results[content.id]['type'] = context
+          results[content.id]['module'] = module.id
+    results

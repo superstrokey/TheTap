@@ -3,8 +3,9 @@ require! {
     \lunr
     '../material'
     \path
-    'prelude-ls': {zip-with}
 }
+
+const INDEXES = ['worlds']
 
 clean-dir = !->
   fs.mkdir-sync it unless fs.exists-sync it
@@ -18,39 +19,33 @@ clean-dir = !->
 class build-lunr-indexes
   (@dirname=path.join __dirname, '..', 'indexes') ->
 
-  apply: (engine) ->    
+  # (content: str) -> index: object
+  add-idx: (content) -> lunr !->
+    # Universal fields
+    @ref 'id'
+    @field 'name'
+    @field 'description'
+    @field 'tags'
+    # Dynamic fields
+    @field 'module'
+    @field 'type'
+    for module in material when module[content]?
+      for el in module[content]
+        el.module = module.id
+        el.type = content
+        @add el
+  
+  write-index:  (location, idx) -> 
+    idx |> JSON.stringify |> fs.write-file-sync location, _
+  
+  apply: (engine) ->
     clean-dir @dirname
-    # modules.index
-    module-file = path.join @dirname, 'modules.index'
-    module-idx = lunr !->
-      @ref 'id'
-      @field 'description'
-      @field 'tags'
-      for module in material 
-        module.type = 'module'
-        @add module
+    # Generate and write indexes 
+    for content in INDEXES
+      file = path.join @dirname, "#content.index"
+      idx = @add-idx content
+      @write-index file, idx
     
-    # worlds.index
-    world-file = path.join @dirname, 'worlds.index'
-    world-idx = lunr !->
-      @ref 'id'
-      @field 'module'
-      @field 'tags'
-      @field 'type'
-      for module in material when module.worlds?
-        module |> JSON.stringify |> console.log
-        for world in module.worlds
-          world.module = module.id
-          world.type = 'world'
-          @add world
     
-    # Write indexes
-    write-index = (location, idx) -> 
-      idx |> JSON.stringify |> fs.write-file-sync location, _
-    zip-with write-index,
-      * module-file
-        world-file
-      * module-idx
-        world-idx
 
 module.exports = {build-lunr-indexes}

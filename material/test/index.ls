@@ -1,4 +1,5 @@
 module.exports =
-  id: 'Test'
+  id: 'test'
+  name: 'Test'
   description: 'WIP materials for testing.'
   worlds: require('./worlds')

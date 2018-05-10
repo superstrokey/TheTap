@@ -19,7 +19,6 @@ class Engine
     @app.ticker.add -> (@update it), @
     @app.ticker.start!
     log.yay 'Done!'
-  
   init: -> switch it
     | \game => @push-scene new entity.IntroScene @
     | \test => @push-scene new entity.IntroScene @

@@ -7,4 +7,5 @@ require! {
 import './style.css'
 
 log.main "Starting \"The Tap\" (version: #{settings.version})"
-new Engine!init \test
+engine = new Engine!
+engine.init \test
