@@ -10,25 +10,27 @@ class Scene extends Entity
   go-to: -> @engine.push-scene it
   exit: -> @engine.pop-scene!
 
+
 class IntroScene extends Scene
   (engine) -> 
     super engine, engine.app, 'Intro'
     @app.stage.add-child new PIXI.Text 'The Tap' do
-        font-family: 'Arial'
+        font-family: 'Helveltica'
         font-size: 24
         align: 'center'
         fill: 0xffffff
-    @tick = 0
+    @step = 0
 
   update: (dt) ->
     console.log 'updating'
-    @tick++
-    if tick == 30
+    @step++
+    if @step == 100
       @app.stage.add-child new PIXI.Text 'More Tap' do
           font-family: 'Helveltica'
           font-size: 36
           align: 'center'
           fill: 0xffffff
-          y: 240
+          x: 400
+          y: 400
 
-module.exports = {IntroScene}
+module.exports = { IntroScene }

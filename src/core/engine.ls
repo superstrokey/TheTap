@@ -1,5 +1,6 @@
 require! 'pixi.js': PIXI
-require! <[ ./entity ./log ../settings ]>
+require! './index': {entity, log}
+require!  '../settings' 
 
 class Engine
   -> 
@@ -17,14 +18,14 @@ class Engine
     document.body.append-child @app.view
     log.sys 'Adding update to ticker'
     @app.ticker.add -> (@update it), @
-    @app.ticker.start!
     log.yay 'Done!'
+
   init: -> switch it
     | \game => @push-scene new entity.IntroScene @
     | \test => @push-scene new entity.IntroScene @
     | otherwise => ...
 
-  current: -> @scene-stack[*]
+  current: -> @scene-stack[*-1]
 
   push-scene: -> 
     log.sys "▶️ Push #{it.name}"
@@ -34,6 +35,7 @@ class Engine
     log.sys '◀️ Pop scene'
     @scene-stack.pop!
 
-  update: (dt) -> @current()?update(dt)
+  update: (dt) ->
+    @current()?update(dt)
 
 module.exports = Engine
